@@ -21,6 +21,7 @@ const routes = [
 ]
 // 创建实例
 const router = new VueRouter({
+  linkActiveClass:"active",
   routes 
 })
 
@@ -35,6 +36,7 @@ const app = new Vue({
   render: h => h(App)
 }).$mount('#app')
 // 原来的 go API升级了，
+// https://router.vuejs.org/en/essentials/navigation.html
 // https://router.vuejs.org/zh-cn/essentials/named-routes.html
 // 只能只是前进后退，要采用push https://segmentfault.com/q/1010000007906160 
 router.push("/goods")
