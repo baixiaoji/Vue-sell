@@ -28,6 +28,7 @@ export default {
     }
   },
   created(){
+    //https://github.com/pagekit/vue-resource/blob/develop/docs/http.md#response
     this.$http.get("/api/seller").then((response) => {
         response = response.body;
         if(response.errno === ERR_OK){
