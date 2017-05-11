@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueRouter from "vue-router"
+import VueResource from "vue-resource"
 import App from './App'
 // 引用的组件
 import goods from "./components/goods/goods"
@@ -14,7 +15,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 
 Vue.use(VueRouter)
-
+Vue.use(VueResource)
 // 路径map
 const routes = [
   { path: '/goods', component: goods },
@@ -30,7 +31,6 @@ const router = new VueRouter({
 // 4. 创建和挂载根实例。
 // 记得要通过 router 配置参数注入路由，
 // 从而让整个应用都有路由功能
-// let app = Vue.extend(App)
 const app = new Vue({
   // el: "#app",
   router,
