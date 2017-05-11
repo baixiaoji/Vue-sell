@@ -3,28 +3,23 @@
 import Vue from 'vue'
 import VueRouter from "vue-router"
 import App from './App'
-
+// 引用的组件
 import goods from "./components/goods/goods"
 import ratings from "./components/ratings/ratings"
 import seller from "./components/seller/seller"
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */
-// new Vue({
-//   el: '#app',
-//   template: '<App/>',
-//   components: { App }
-// })
 
 Vue.use(VueRouter)
 
-
+// 路径map
 const routes = [
   { path: '/goods', component: goods },
   { path: '/ratings', component: ratings },
   { path: '/seller', component: seller },
 ]
-
+// 创建实例
 const router = new VueRouter({
   routes 
 })
@@ -36,6 +31,11 @@ const router = new VueRouter({
 const app = new Vue({
   // el: "#app",
   router,
+  // 不清楚为什么有这个函数，基础指引里面没有
   render: h => h(App)
 }).$mount('#app')
+// 原来的 go API升级了，
+// https://router.vuejs.org/zh-cn/essentials/named-routes.html
+// 只能只是前进后退，要采用push https://segmentfault.com/q/1010000007906160 
+router.push("/goods")
 
