@@ -31,7 +31,14 @@
             <img :src="seller.avatar"  width="100%" height="100%">
         </div>
         <div v-show="detailShow" class="detail">
-            
+            <div class="detail-wrapper clearfix">
+                <div class="detail-main">
+                    <p>{{seller.bulletin}}</p>
+                </div>
+            </div>
+            <div class="detail-close">
+                <i class="icon-close"></i>
+            </div>
         </div>
     </div>
 </template>
@@ -206,7 +213,22 @@
             width:100%;
             height:100%;
             overflow: auto;
-            background:rgba(7,17,27,.8)
+            background:rgba(7,17,27,.8);
+            .detail-wrapper{
+                min-height:100%;
+                .detail-main{
+                    margin-top:64px;
+                    padding-bottom: 64px;
+                }
+            }
+            .detail-close{
+                position: relative;
+                width:32px;
+                height:32px;
+                margin:-64px auto 0 auto;
+                clear:both;
+                font-size: 32px;
+            }
         }
     }
 </style>
