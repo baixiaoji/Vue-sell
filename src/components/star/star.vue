@@ -1,6 +1,7 @@
 <template>
     <div class="star" :class="starType">
-        <span v-for="itemClass in itemClasses" :class="itemClass" class="start-item"></span>
+        <span v-for="itemClass in itemClasses"  :class="itemClass" class="star-item" 
+        :key="itemClass.id"></span>
     </div>
 </template>
 <script>
@@ -20,7 +21,7 @@
         },
         computed: {
             starType() {
-                return `start-${this.size}`
+                return `star-${this.size}`
             },
             itemClasses() {
                 let result = [];
