@@ -91,7 +91,6 @@
         },
         created() {
             this.classMap = ["decrease", "discount", "guarantee", "invoice", "special"];
-
         },
         components: {
             star
