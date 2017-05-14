@@ -23,12 +23,10 @@
                                 <h2 class="name">{{food.name}}</h2>
                                 <p class="desc">{{food.description}}</p>
                                 <div class="extra">
-                                    <span class="count">月售{{food.sellCount}}份</span>
-                                    <span>好评率{{food.rating}}%</span>
+                                    <span class="count">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
                                 </div>
                                 <div class="price">
-                                    <span class="now">￥{{food.price}}</span>
-                                    <span  class="old" v-show="food.oldPrice">￥{{food.oldPricegst}}</span>
+                                    <span class="now">￥{{food.price}}</span><span  class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
                             </div>
                         </li>
@@ -61,12 +59,17 @@
                 if(response.errno === ERR_OK){
                     this.goods = response.data
                     // console.log(this.goods)
-                    this._initScroll()
+                    // https://cn.vuejs.org/v2/api/#Vue-nextTick
+                    this.$nextTick( () => {
+                        this._initScroll()
+                    })
                 }
             })
         },
         methods: {
             _initScroll(){
+               //  https://cn.vuejs.org/v2/api/#选项-DOM
+               // http://www.jianshu.com/p/728f03674444  资料   Vue 1.X 获取DOM是v-el
                 // console.log(this.$refs.menuWrapper )
                 this.menuScroll = new BScroll(this.$refs.menuWrapper,{})
                 this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {})
@@ -167,6 +170,7 @@
                 }
                 .desc{
                    margin-bottom: 8px;
+                   line-height: 12px;
                 }
                 .extra{
                     line-height: 10px;
