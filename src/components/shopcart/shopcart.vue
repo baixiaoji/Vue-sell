@@ -19,6 +19,12 @@
 <script>
     export default{
         props:{
+            selectFoods:{
+                type: Array,
+                default(){
+                    return [];
+                }
+            },
             deliverPrice:{
                 type:Number,
                 default: 0
