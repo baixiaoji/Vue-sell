@@ -2,7 +2,8 @@
     <div class="goods">
         <div class="menu-wrapper" ref="menuWrapper">
             <ul>
-                <li v-for="item in goods" class="menu-item">
+                <li v-for="(item,index) in goods" class="menu-item" 
+                :class="{'current': currentIndex === index}" @click="selectMenu(index,$event)">
                     <span class="text border-1px">
                         <span v-show="item.type > 0" class="icon" 
                             :class="classMap[item.type]"></span>{{ item.name }}
@@ -12,7 +13,7 @@
         </div>
         <div class="foods-wrapper" ref="foodsWrapper">
             <ul>
-                <li v-for="item in goods" class="food-list">
+                <li v-for="item in goods" class="food-list food-list-hook" >
                     <h1 class="title">{{ item.name}}</h1>
                     <ul>
                         <li v-for="food in item.foods" class="food-item border-1px">
@@ -48,7 +49,23 @@
         },
         data(){
             return {
-                goods: []
+                goods: [],
+                listHeight: [],
+                scrollY: 0
+            }
+        },
+        computed: {
+            currentIndex(){
+                // 计算scrollY 在那个区间
+                for(let i=0; i<this.listHeight.length; i++){
+                    let height1 = this.listHeight[i]
+                    // 最后的时候   height2 会为 undefined  所以判断有处理一下
+                    let height2 = this.listHeight[i+1]
+                    if(!height2 || ( this.scrollY >= height1 && this.scrollY<height2)){
+                        return i
+                    }
+                }
+                return 0
             }
         },
         created(){
@@ -62,6 +79,7 @@
                     // https://cn.vuejs.org/v2/api/#Vue-nextTick
                     this.$nextTick( () => {
                         this._initScroll()
+                        this._calculateHeight();
                     })
                 }
             })
@@ -71,8 +89,40 @@
                //  https://cn.vuejs.org/v2/api/#选项-DOM
                // http://www.jianshu.com/p/728f03674444  资料   Vue 1.X 获取DOM是v-el
                 // console.log(this.$refs.menuWrapper )
-                this.menuScroll = new BScroll(this.$refs.menuWrapper,{})
-                this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {})
+                this.menuScroll = new BScroll(this.$refs.menuWrapper,{
+                    click: true
+                })
+                this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+                    probeType: 3
+                })
+
+                this.foodsScroll.on("scroll", (pos)=>{
+                   // 获取 滚动的距离
+                    this.scrollY = Math.abs( Math.round(pos.y));
+
+                })
+            },
+            _calculateHeight(){
+                let foodList = this.$refs.foodsWrapper.getElementsByClassName(" food-list-hook")
+                // console.log( foodList )
+                let height = 0;
+                this.listHeight.push(height);
+                for(let i = 0; i < foodList.length; i++){
+                    let item = foodList[i]
+                    // 可以获取某一段的区间
+                    height += item.clientHeight;
+                    this.listHeight.push(height)
+                }
+            },
+            selectMenu(index, e){
+                // 原生的阻止掉  PC会有两次 显示
+                if(!e._constructed){
+                    return;
+                }
+                let foodList = this.$refs.foodsWrapper.getElementsByClassName(" food-list-hook")
+                let el = foodList[index]
+                this.foodsScroll.scrollToElement(el, 300)
+                // console.log(index)
             }
         }
     }
@@ -97,6 +147,15 @@
             height: 54px;
             padding:0 12px;
             line-height: 14px;
+            &.current{
+                position: relative;
+                z-index: 10;
+                background:#fff ;
+                font-weight: 700;
+                .text{
+                   @include border-none(); 
+                }
+            }
             .icon{
                 display: inline-block;
                 vertical-align: top;
