@@ -1,6 +1,6 @@
 <template>
     <div class="shopcart">
-        <div class="content">
+        <div class="content" @click="toggleList">
             <div class="content-left">
                 <div class="logo-wrapper">
                     <div class="logo" :class="{'highlight':totalCount>0}">
@@ -15,25 +15,27 @@
                 <div class="pay" :class="payClass">{{payDesc}}</div>
             </div>
         </div>
-        <div class="shopcart-list" v-show="listShow">
-            <div class="list-header">
-                <h1 class="title">购物车</h1>
-                <span class="empty">清空</span>
+        <transition name="fold" class="tansition-wrapper" tag="div">
+            <div class="shopcart-list" v-show="listShow" key="item">
+                    <div class="list-header">
+                        <h1 class="title">购物车</h1>
+                        <span class="empty">清空</span>
+                    </div>
+                    <div class="list-content">
+                        <ul>
+                            <li class="food" v-for="food in selectFoods">
+                                <span class="name">{{food.name}}</span>
+                                <div class="price">
+                                    <span>￥{{food.price * food.count}}</span>
+                                </div>
+                                <div class="cartcontrol-wrapper">
+                                    <cartcontrol :food="food"></cartcontrol>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
             </div>
-            <div class="list-content">
-                <ul>
-                    <li class="food" v-for="food in selectFoods">
-                        <span class="name">{{food.name}}</span>
-                        <div class="price">
-                            <span>￥{{food.price * food.count}}</span>
-                        </div>
-                        <div class="cartcontrol-wrapper">
-                            <cartcontrol :food="food"></cartcontrol>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        </transition>
     </div>
 </template>
 <script>
@@ -43,7 +45,7 @@
             selectFoods: {
                 type: Array,
                 default() {
-                    return [ ];
+                    return [];
                 }
             },
             deliverPrice: {
@@ -53,6 +55,11 @@
             minPrice: {
                 type: Number,
                 default: 0
+            }
+        },
+        data(){
+            return {
+                fold: true
             }
         },
         computed: {
@@ -75,24 +82,40 @@
             payDesc() {
                 if (this.totalPrice === 0) {
                     return `￥${this.minPrice}元起送`
-                }else if(this.totalPrice < this.minPrice){
-                    let diff  = this.minPrice - this.totalPrice;
+                } else if (this.totalPrice < this.minPrice) {
+                    let diff = this.minPrice - this.totalPrice;
                     return `还差￥${diff}元`
-                }else{
+                } else {
                     return "去结算"
                 }
             },
             payClass() {
                 // 计算class 
-                if(this.totalPrice < this.minPrice){
+                if (this.totalPrice < this.minPrice) {
                     return "not-enough"
-                }else{
+                } else {
                     return "enough"
                 }
+            },
+            listShow() {
+                if(!this.totalCount){
+                    this.fold = true;
+                    return false
+                }
+                let show = !this.fold
+                return show
             }
         },
-        components(){
+        components: {
             cartcontrol
+        },
+        methods:{
+            toggleList(){
+                if(!this.totalCount){
+                    return
+                }
+                this.fold = !this.fold;
+            }
         }
     }
 
@@ -191,14 +214,57 @@
                     font-size: 12px;
                     color: rgba(255, 255, 255, .4);
                     background: #2b333b;
-                    &.not-enough{
+                    &.not-enough {
                         background: #2b333b;
                     }
-                    &.enough{
+                    &.enough {
                         background: #00b43c;
                         color: #fff;
                     }
                 }
+            }
+        }
+        /*.tansition-wrapper{
+            position: relative;
+            left: 0;
+            bottom: 0;
+            height: 48px;
+        }*/
+        .shopcart-list{
+            position: absolute;
+            /*top:0;*/
+            left:0;
+            z-index:-1;
+            width: 100%;
+            transition: all 0.5s;
+            transform: translate3d(0,-100%,0);
+            /*&.fold-transition{
+                transition: all 0.5s;
+                transform: translate3d(0,-100%,0);
+            }*/
+            &.fold-enter, &.fold-leave-active{
+                transform: translate3d(0,0,0);
+            }
+            .list-header{
+                height: 40px;
+                line-height: 40px;
+                padding: 0 18px;
+                background: #f3f5f7;
+                border-bottom: 1px solid rgba(7,17,27,0.1);
+                .title{
+                    float: left;
+                    font-size: 14px;
+                    color: rgb(7,17,27);
+                }
+                .empty{
+                    float: right;
+                    font-size: 12px;
+                    color: rgb(0,160,220);
+                }
+            }
+            .list-content{
+                padding: 0 18px;
+                max-height: 217px;
             }
         }
     }
