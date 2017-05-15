@@ -15,9 +15,29 @@
                 <div class="pay" :class="payClass">{{payDesc}}</div>
             </div>
         </div>
+        <div class="shopcart-list" v-show="listShow">
+            <div class="list-header">
+                <h1 class="title">购物车</h1>
+                <span class="empty">清空</span>
+            </div>
+            <div class="list-content">
+                <ul>
+                    <li class="food" v-for="food in selectFoods">
+                        <span class="name">{{food.name}}</span>
+                        <div class="price">
+                            <span>￥{{food.price * food.count}}</span>
+                        </div>
+                        <div class="cartcontrol-wrapper">
+                            <cartcontrol :food="food"></cartcontrol>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 <script>
+    import cartcontrol from "../cartcontrol/cartcontrol"
     export default {
         props: {
             selectFoods: {
@@ -70,6 +90,9 @@
                     return "enough"
                 }
             }
+        },
+        components(){
+            cartcontrol
         }
     }
 
