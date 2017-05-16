@@ -43,14 +43,14 @@
                                     <span class="name">{{rating.username}}</span>
                                     <img class="avatar" width="12" height="12" :src="rating.avatar">
                                 </div>
-                                <div class="time">{{rating.rateTime}}</div>
+                                <div class="time">{{rating.rateTime | formatDate}}</div>
                                 <p class="text">
                                     <span :class="{'icon-thumb_up':rating.rateType === 0,
                                           'icon-thumb_down':rating.rateType === 1}"></span>{{rating.text}}
                                 </p>
                             </li>
                         </ul>
-                        <div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+                        <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
     import cartcontrol from "../cartcontrol/cartcontrol"
     import split from "../split/split"
     import ratingselect from "../ratingselect/ratingselect"
-
+    import {formatDate} from "../../common/js/data"
 
     // const POSITIVE = 0;
     // const NEGATIVE = 1;
@@ -136,6 +136,12 @@
                 }else{
                     return type === this.selectType;
                 }
+            }
+        },
+        filters: {
+            formatDate(time){
+                let date = new Date(time);
+                return formatDate(date,"yyyy-MM-dd hh:mm:ss")
             }
         },
         components: {
@@ -322,6 +328,11 @@
                         }
                     }
                 }
+            }
+            .no-rating{
+                padding: 16px 0;
+                font-size: 12px;
+                color: rgb(147,153,159);
             }
         }
     }
