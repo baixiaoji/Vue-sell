@@ -1,11 +1,11 @@
 <template>
     <div class="ratingselect">
         <div class="rating-type border-1px">
-            <span class="block positive " :class="{'active':selectType === 2}">{{desc.all}}<span class="count">47</span> </span>
-            <span class="block positive" :class="{'active':selectType === 0}">{{desc.positive}}<span class="count">50</span> </span>
-            <span class="block negative " :class="{'active':selectType === 1}">{{desc.negative}}<span class="count">40</span> </span>
+            <span class="block positive " :class="{'active':selectType === 2}">{{desc.all}}<span class="count">47</span>            </span>
+            <span class="block positive" :class="{'active':selectType === 0}">{{desc.positive}}<span class="count">50</span>            </span>
+            <span class="block negative " :class="{'active':selectType === 1}">{{desc.negative}}<span class="count">40</span>            </span>
         </div>
-        <div class="switch">
+        <div class="switch" :class="{'on':onlyContent}">
             <span class="icon-check_circle"></span>
             <span class="text">只看有内容的评价</span>
         </div>
@@ -76,10 +76,33 @@
                 }
                 &.negative {
                     background: rgba(77, 85, 93, 0.2);
-                    &.active{
+                    &.active {
                         background: rgba(77, 85, 93, 1);
                     }
                 }
+            }
+        }
+        .switch {
+            padding: 12px 18px;
+            line-height: 24px;
+            border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+            color: rgb(147, 153, 159);
+            font-size: 0;
+            &.on{
+                .icon-check_circle{
+                    color: #00c850;
+                }
+            }
+            .icon-check_circle {
+                display: inline-block;
+                vertical-align: top;
+                margin-right: 4px;
+                font-size: 24px;
+            }
+            .text{
+                display: inline-block;
+                vertical-align: top;
+                font-size: 12px;
             }
         }
     }
