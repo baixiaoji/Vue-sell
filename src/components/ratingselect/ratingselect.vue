@@ -42,6 +42,12 @@
                 }
             }
         },
+        date() {
+            return {
+                selecttype: this.selectType,
+                onlycontent: this.onlycContent
+            }
+        },
         computed: {
             positives() {
                 return this.ratings.filter((rating) => {
@@ -59,7 +65,7 @@
                 if (!e._constructed) {
                     return;
                 }
-                this.selectType = type;
+                this.selecttype = type;
                 //https://github.com/webplus/blog/issues/10
                 //https://cn.vuejs.org/v2/api/#vm-emit
                 this.$emit("ratingtypeSelect", type)
@@ -68,9 +74,9 @@
                 if (!e._constructed) {
                     return;
                 }
-                this.onlyContent = !this.onlyContent;
+                this.onlycontent = !this.onlycontent;
                 //
-                this.$emit("contentToggle", this.onlyContent)
+                this.$emit("contentToggle", this.onlycontent)
             }
         }
     }
