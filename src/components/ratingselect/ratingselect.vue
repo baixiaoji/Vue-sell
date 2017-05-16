@@ -62,7 +62,7 @@
                 this.selectType = type;
                 //https://github.com/webplus/blog/issues/10
                 //https://cn.vuejs.org/v2/api/#vm-emit
-                this.$emit("ratingtype.select", type)
+                this.$emit("ratingtypeSelect", type)
             },
             toggleContent(e) {
                 if (!e._constructed) {
@@ -70,7 +70,7 @@
                 }
                 this.onlyContent = !this.onlyContent;
                 //
-                this.$emit("content.tiggle", this.onlyContent)
+                this.$emit("contentToggle", this.onlyContent)
             }
         }
     }

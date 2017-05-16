@@ -34,11 +34,11 @@
                     <h1 class="title">
                         商品评价
                     </h1>
-                    <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings">
+                    <ratingselect v-on:ratingtypeSelect="changeType" v-on:contentToggle="toggleContent" :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings">
                     </ratingselect>
                     <div class="rating-wrapper">
                         <ul v-show="food.ratings && food.ratings.length">
-                            <li v-for="rating in food.ratings" class="rating-item border-1px">
+                            <li v-show="needShow(rating.rateType,rating.text)" v-for="rating in food.ratings" class="rating-item border-1px">
                                 <div class="user">
                                     <span class="name">{{rating.username}}</span>
                                     <img class="avatar" width="12" height="12" :src="rating.avatar">
@@ -65,8 +65,8 @@
     import ratingselect from "../ratingselect/ratingselect"
 
 
-    const POSITIVE = 0;
-    const NEGATIVE = 1;
+    // const POSITIVE = 0;
+    // const NEGATIVE = 1;
     const ALL = 2
     export default {
         props: {
@@ -87,6 +87,21 @@
             }
         },
         methods: {
+            
+            changeType(type){
+                this.selectType = type
+                // 修改以上 DOM  并不会立马更新  会在一个队列中  之后执行
+                this.$nextTick(()=>{
+                    this.scroll.refresh();
+                })
+                 
+            },
+            toggleContent(onlyContent){
+                this.onlyContent = onlyContent;
+                this.$nextTick(()=>{
+                    this.scroll.refresh();
+                })
+            },
             show() {
                 this.showFlag = true;
                 this.selectType = ALL;
@@ -110,6 +125,17 @@
                 }
                 // console.log("click")
                 Vue.set(this.food, "count", 1)
+            },
+            needShow(type,text){
+                if(this.onlyContent && !text){
+                    return false
+                }
+
+                if(this.selectType === ALL){
+                    return true;
+                }else{
+                    return type === this.selectType;
+                }
             }
         },
         components: {
