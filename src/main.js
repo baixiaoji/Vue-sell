@@ -41,5 +41,5 @@ const app = new Vue({
 // https://router.vuejs.org/en/essentials/navigation.html
 // https://router.vuejs.org/zh-cn/essentials/named-routes.html
 // 只能只是前进后退，要采用push https://segmentfault.com/q/1010000007906160 
-router.push("/goods")
+// router.push("/goods")
 

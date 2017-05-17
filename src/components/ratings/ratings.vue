@@ -30,7 +30,7 @@
             </ratingselect>
             <div class="ratings-wrapper">
                 <ul>
-                    <li v-for="rating in ratings" class="rating-item">
+                    <li v-show="needShow(rating.rateType, rating.text)" v-for="rating in ratings" class="rating-item">
                         <div class="avatar">
                             <img :src="rating.avatar" width="28" height="28">
                         </div>
@@ -82,9 +82,27 @@
         methods: {
             changeType(type) {
                 this.selectType = type;
+                this.$nextTick(() => {
+                    this.scroll.refresh();
+                })
             },
             toggleContent(onlyContent) {
                 this.onlyContent = onlyContent;
+                this.$nextTick(() => {
+                    this.scroll.refresh();
+                })
+            },
+            needShow(type,text){
+                // console.log(type, text)
+                if(this.onlyContent && !text){
+                    return false
+                }
+
+                if(this.selectType === ALL){
+                    return true;
+                }else{
+                    return type === this.selectType;
+                }
             }
         },
         created() {
@@ -260,10 +278,11 @@
                     }
                     .recommend {
                         line-height: 16px;
+                        font-size: 0;
                         .icon-thumb_up,
                         .item {
                             display: inline-block;
-                            margin-right: 8px;
+                            margin-right: 3px;
                             margin-bottom: 4px;
                             font-size: 12px;
                         }
@@ -277,6 +296,14 @@
                             color: rgb(147, 153, 159);
                             background: #fff;
                         }
+                    }
+                    .time{
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        line-height:16px;
+                        font-size: 12px;
+                        color: rgb(147, 153, 159);
                     }
                 }
             }
