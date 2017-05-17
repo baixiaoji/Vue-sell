@@ -44,8 +44,8 @@
                             </div>
                             <p class="text">{{rating.text}}</p>
                             <div class="recommend" v-show="rating.recommend || recommend.length">
-                                <span class="icon_thumb-up"></span>
-                                <span v-for="item in rating.recommend">{{item}}</span>
+                                <span class="icon icon-thumb_up"></span>
+                                <span class="item" v-for="item in rating.recommend">{{item}}</span>
                             </div>
                             <div class="time">
                                 {{rating.rateTime | formatDate}}
@@ -94,9 +94,15 @@
                     this.ratings = response.data;
                     // console.log(this.ratings)
                     this.$nextTick(() => {
-                        this.scroll = new BScroll(this.$refs.ratings, {
-                            click: true
-                        })
+                        // 多个的实例化
+                        if (!this.scroll) {
+                            this.scroll = new BScroll(this.$refs.ratings, {
+                                click: true
+                            })
+                        } else {
+                            this.scroll.refresh();
+                        }
+
                     })
 
                 }
@@ -244,6 +250,32 @@
                             line-height: 12px;
                             font-size: 10px;
                             color: rgb(147, 153, 159);
+                        }
+                    }
+                    .text {
+                        margin-bottom: 8px;
+                        line-height: 18px;
+                        color: rgb(7, 17, 27);
+                        font-size: 12px;
+                    }
+                    .recommend {
+                        line-height: 16px;
+                        .icon-thumb_up,
+                        .item {
+                            display: inline-block;
+                            margin-right: 8px;
+                            margin-bottom: 4px;
+                            font-size: 12px;
+                        }
+                        .icon-thumb_up {
+                            color: rgb(0, 160, 220);
+                        }
+                        .item {
+                            padding: 0 6px;
+                            border: 1px solid rgba(7, 17, 27, 0.1);
+                            border-radius: 1px;
+                            color: rgb(147, 153, 159);
+                            background: #fff;
                         }
                     }
                 }
