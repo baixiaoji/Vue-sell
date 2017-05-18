@@ -82,7 +82,7 @@
         data() {
             return {
                 favorite: (()=>{
-                    return loadFromLocal(this.seller.id,"favorite",false)
+                    return loadFromLocal(this.seller.id,"favorite",falsegit)
                 })()
             }
         },
