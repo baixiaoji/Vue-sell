@@ -28,6 +28,10 @@
                         </div>
                     </li>
                 </ul>
+                <div class="favorite" @click="toggleFavorite">
+                    <span class="icon-favorite" :class="{'active':favorite}"></span>
+                    <span class="text">{{favoriteText}}</span>
+                </div>
             </div>
             <split></split>
             <div class="bulletin">
@@ -67,11 +71,24 @@
     import star from "../star/star"
     import split from "../split/split"
     import BScroll from "better-scroll";
+   import {saveToLocal,loadFromLocal} from "../../common/js/store"
 
     export default {
         props: {
             seller: {
                 type: Object
+            }
+        },
+        data() {
+            return {
+                favorite: (()=>{
+                    return loadFromLocal(this.seller.id,"favorite",false)
+                })()
+            }
+        },
+        computed:{
+            favoriteText() {
+                return this.favorite ? "已收藏" : "收藏";
             }
         },
         watch: {
@@ -92,6 +109,14 @@
             this._initPics();
         },
         methods: {
+            toggleFavorite(e){
+                if(!e._constructed){
+                    return
+                }
+                this.favorite = !this.favorite;
+                saveToLocal(this.seller.id,"favorite",this.favorite)
+                
+            },
             _initScroll() {
                 // BSscroll 使用要是在DOM  完成渲染的
                 if (!this.scroll) {
@@ -108,7 +133,7 @@
                     let margin = 6;
                     let width = (picWidth + margin) * this.seller.pics.length
                     this.$refs.picList.style.width = `${width}px`;
-                    console.log(width)
+                    // console.log(width)
                     // console.log(this.$refs.picList.style)
                     this.$nextTick(() => {
                         if (!this.picScroll) {
@@ -191,6 +216,28 @@
                             font-size: 24px;
                         }
                     }
+                }
+            }
+            .favorite{
+                position: absolute;
+                width: 50px;
+                right: 11px;
+                top: 18px;
+                text-align: center;
+                .icon-favorite{
+                    display: block;
+                    margin-bottom: 4px;
+                    color:#d4d6d9;
+                    line-height: 24px;
+                    font-size: 24px;
+                    &.active{
+                        color:rgb(240,20,20);
+                    }
+                }
+                .text{
+                    line-height: 10px;
+                    font-size: 10px;
+                    color:rgb(77,85,93);
                 }
             }
         }
@@ -295,7 +342,7 @@
                 @include border-1px(rgba(7, 17, 27, 0.1));
                 color: rgb(7, 17, 27);
                 font-size: 12px;
-                &:last-child{
+                &:last-child {
                     @include border-none();
                 }
             }
