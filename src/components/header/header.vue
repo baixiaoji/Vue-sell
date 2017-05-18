@@ -306,7 +306,7 @@
                                 background-size: 16px 16px;
                                 background-repeat: no-repeat;
                                 &.decrease {
-                                    @include bg-image("decrease_1");
+                                    @include bg-image("decrease_2");
                                 }
                                 &.discount {
                                     @include bg-image("discount_2");
