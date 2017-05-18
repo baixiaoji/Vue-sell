@@ -50,7 +50,7 @@ apiRoutes.get("/ratings",function(req, res){
   })
 })
 
-app.use("/api", apiRoutes)
+app.use("/Vue-sell/dist/api", apiRoutes)
 
 
 

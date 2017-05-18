@@ -37,7 +37,7 @@ export default {
   },
   created(){
     //https://github.com/pagekit/vue-resource/blob/develop/docs/http.md#response
-    this.$http.get("/Vue-sell/api/seller?id="+ this.seller.id).then((response) => {
+    this.$http.get("/Vue-sell/dist/api/seller?id="+ this.seller.id).then((response) => {
         response = response.body;
         if(response.errno === ERR_OK){
           this.seller = Object.assign({},this.seller,response.data)
