@@ -21,8 +21,8 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
-
-var appData = require("../data.json")
+//path.resolve(__dirname, '../dist/index.html')
+var appData = require(path.resolve(__dirname, "../data.json"))
 var seller = appData.seller
 var goods = appData.goods
 var ratings = appData.ratings
