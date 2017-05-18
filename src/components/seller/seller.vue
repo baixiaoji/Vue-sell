@@ -78,7 +78,11 @@
         },
         mounted() {
             this._initScroll();
-             this._initPics();
+            this._initPics();
+        },
+        updated() {
+            this._initScroll();
+            this._initPics();
         },
         methods: {
             _initScroll() {
